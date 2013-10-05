@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_centerInParent="true"
+              android:layout_width="wrap_content"
+              android:layout_height="fill_parent">
+
+    <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:id="@+id/table_hours"
+            >
+
+        <!-- 5 columns -->
+        <TableRow
+                android:id="@+id/tableRowTitles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/table_padding"
+                android:layout_weight="1"
+                android:gravity="center_horizontal">
+
+            <TextView
+                    android:id="@+id/textViewLocation"
+                    android:text="@string/location"
+                    android:textStyle="bold"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <TextView
+                    android:id="@+id/textViewBreakfast"
+                    android:text="@string/breakfast"
+                    android:textStyle="bold"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <TextView
+                    android:id="@+id/textViewLunch"
+                    android:text="@string/lunch"
+                    android:textStyle="bold"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <TextView
+                    android:id="@+id/textViewDinner"
+                    android:text="@string/dinner"
+                    android:textStyle="bold"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <TextView
+                    android:id="@+id/textViewLateNight"
+                    android:text="@string/late_night"
+                    android:textStyle="bold"
+                    android:padding="@dimen/table_padding"
+                    />
+        </TableRow>
+
+        <!-- Bcafe -->
+        <TableRow
+                android:id="@+id/tableRowBcafe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/table_padding"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                >
+
+            <TextView
+                    android:id="@+id/textViewBcafe1"
+                    android:text="@string/bcafe"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewBcafeBreakfast"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewBcafeLunch"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewBcafeDinner"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewBcafeLateNight"
+                    android:padding="@dimen/table_padding"
+                    />
+        </TableRow>
+
+        <!-- Bplate -->
+        <TableRow
+                android:id="@+id/tableRowBplate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/table_padding"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                >
+
+            <TextView
+                    android:id="@+id/textViewBplate1"
+                    android:text="@string/bplate"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewBplateBreakfast"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewBplateLunch"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewBplateDinner"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewBplateLateNight"
+                    android:padding="@dimen/table_padding"
+                    />
+        </TableRow>
+
+        <!-- Cafe1919 -->
+        <TableRow
+                android:id="@+id/tableRowCafe1919"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/table_padding"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                >
+
+            <TextView
+                    android:id="@+id/textViewCafe19191"
+                    android:text="@string/cafe1919"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewCafe1919Breakfast"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewCafe1919Lunch"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewCafe1919Dinner"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewCafe1919LateNight"
+                    android:padding="@dimen/table_padding"
+                    />
+        </TableRow>
+
+        <!-- Covel -->
+        <TableRow
+                android:id="@+id/tableRowCovel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/table_padding"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                >
+
+            <TextView
+                    android:id="@+id/textViewCovel1"
+                    android:text="@string/covel"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewCovelBreakfast"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewCovelLunch"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewCovelDinner"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewCovelLateNight"
+                    android:padding="@dimen/table_padding"
+                    />
+        </TableRow>
+
+        <!-- DeNeve -->
+        <TableRow
+                android:id="@+id/tableRowDeneve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/table_padding"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                >
+
+            <TextView
+                    android:id="@+id/textViewDeneve1"
+                    android:text="@string/deneve"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewDeneveBreakfast"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewDeneveLunch"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewDeneveDinner"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewDeneveLateNight"
+                    android:padding="@dimen/table_padding"
+                    />
+        </TableRow>
+
+        <!-- Feast -->
+        <TableRow
+                android:id="@+id/tableRowFeast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/table_padding"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                >
+
+            <TextView
+                    android:id="@+id/textViewFeast1"
+                    android:text="@string/feast"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewFeastBreakfast"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewFeastLunch"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewFeastDinner"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewFeastLateNight"
+                    android:padding="@dimen/table_padding"
+                    />
+        </TableRow>
+
+        <!-- Hedrick -->
+        <TableRow
+                android:id="@+id/tableRowHedrick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/table_padding"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                >
+
+            <TextView
+                    android:id="@+id/textViewHedrick1"
+                    android:text="@string/hedrick"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewHedrickBreakfast"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewHedrickLunch"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewHedrickDinner"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewHedrickLateNight"
+                    android:padding="@dimen/table_padding"
+                    />
+        </TableRow>
+
+        <!-- Rendezvous -->
+        <TableRow
+                android:id="@+id/tableRowRen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/table_padding"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                >
+
+            <TextView
+                    android:id="@+id/textViewRen1"
+                    android:text="@string/rendezvous"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewRenBreakfast"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewRenLunch"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewRenDinner"
+                    android:padding="@dimen/table_padding"
+                    />
+
+            <com.bruinlyfe.bruinlyfe.TimeView
+                    android:id="@+id/timeViewRenLateNight"
+                    android:padding="@dimen/table_padding"
+                    />
+        </TableRow>
+
+    </TableLayout>
+</LinearLayout>

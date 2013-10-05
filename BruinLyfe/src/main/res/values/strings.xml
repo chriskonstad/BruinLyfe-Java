@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" >BruinLyfe
+    </string>
+    <string name="action_settings" >Settings
+    </string>
+    <string name="title_section1" >Dining Hours
+    </string>
+    <string name="title_section2" >Section 2
+    </string>
+    <string name="title_section3" >Section 3
+    </string>
+
+    <string name="location" >Location</string>
+    <string name="breakfast" >Breakfast</string>
+    <string name="lunch" >Lunch</string>
+    <string name="dinner" >Dinner</string>
+    <string name="late_night" >Late Night</string>
+
+    <string name="bcafe" >Bruin Cafe</string>
+    <string name="bplate" >Bruin Plate</string>
+    <string name="cafe1919" >Cafe 1919</string>
+    <string name="covel" >Covel</string>
+    <string name="deneve" >DeNeve</string>
+    <string name="feast">Feast</string>
+    <string name="hedrick">Hedrick</string>
+    <string name="rendezvous">Rendezvous</string>
+
+    <string name="closed">CLOSED</string>
+
+</resources>
