@@ -1,31 +1,19 @@
 package com.bruinlyfe.bruinlyfe;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
@@ -33,10 +21,28 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
     HoursFragment hoursFragment;
+    MenuLoader menuLoader;
+
+    public DiningHall covel = new DiningHall("covel", R.id.timeViewCovelBreakfast, R.id.timeViewCovelLunch, R.id.timeViewCovelDinner, R.id.timeViewCovelLateNight);
+    public DiningHall deneve = new DiningHall("deneve", R.id.timeViewDeneveBreakfast, R.id.timeViewDeneveLunch, R.id.timeViewDeneveDinner, R.id.timeViewDeneveLateNight);
+    public DiningHall feast = new DiningHall("feast", R.id.timeViewFeastBreakfast, R.id.timeViewFeastLunch, R.id.timeViewFeastDinner, R.id.timeViewFeastLateNight);
+    public DiningHall hedrick = new DiningHall("hedrick", R.id.timeViewHedrickBreakfast, R.id.timeViewHedrickLunch, R.id.timeViewHedrickDinner, R.id.timeViewHedrickLateNight);
+    public DiningHall nineteen = new DiningHall("nineteen", R.id.timeViewCafe1919Breakfast, R.id.timeViewCafe1919Lunch, R.id.timeViewCafe1919Dinner, R.id.timeViewCafe1919LateNight);
+
+    List<DiningHall> halls = new ArrayList<DiningHall>();   //TODO: Append dining halls
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -91,6 +97,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+        //Build halls list
+        halls.add(covel);
+        halls.add(deneve);
+        halls.add(feast);
+        halls.add(hedrick);
+        halls.add(nineteen);
+
+        menuLoader = new MenuLoader();
     }
 
     @Override
@@ -220,7 +235,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             DownloadTask dTask;
             dTask = new DownloadTask();
             dTask.execute("http://secure5.ha.ucla.edu/restauranthours/dining-hall-hours-by-day.cfm");
-            //fillDiningHours(rootView);
         }
 
         public void fillDiningHours(List<String> stringList) {
@@ -281,9 +295,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             Log.w("BruinLyfe", "TimeViews: " + String.valueOf(timeViewCount));
             for(int i=0;i<timeViews.length;i++)
             {
+                if(stringList.size() >= j) {
                 timeViews[i].setOpenTime(stringList.get(j-1));
                 timeViews[i].setCloseTime(stringList.get(j));
                 j = j+2;
+                }
             }
         }
 
@@ -322,6 +338,73 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
     }
 
+    public class MenuLoader {
+
+        public MenuLoader() {
+            downloadMenuData(); //temporary
+        }
+
+        public void downloadMenuData() {
+            MenuDownloader dTask;
+            dTask = new MenuDownloader();
+            dTask.execute("http://rest.s3for.me/06161995/mealdata.json");
+        }
+
+        public void parseData(String data) {
+            JSONObject allData;
+
+            for(int j=0;j<halls.size();j++) {
+                JSONObject hallData;
+                JSONArray hallBreakfast;
+                JSONArray hallLunch;
+                JSONArray hallDinner;
+                JSONArray hallLateNight;
+                try {
+                    allData = new JSONObject(data);
+                    hallData = allData.getJSONObject(halls.get(j).name);    //get data for that hall
+                    if(hallData.has("breakfast"))
+                        hallBreakfast = hallData.getJSONArray("breakfast");
+                    else
+                        hallBreakfast = new JSONArray();
+                    if(hallData.has("lunch"))
+                        hallLunch = hallData.getJSONArray("lunch");
+                    else
+                        hallLunch = new JSONArray();
+                    if(hallData.has("dinner"))
+                        hallDinner = hallData.getJSONArray("dinner");
+                    else
+                        hallDinner = new JSONArray();
+                    if(hallData.has("lateNight"))
+                        hallLateNight = hallData.getJSONArray("lateNight");
+                    else
+                        hallLateNight = new JSONArray();
+
+                    halls.get(j).breakfast.clear();
+                    for(int i=0; i<hallBreakfast.length();i++) {
+                        halls.get(j).breakfast.add(hallBreakfast.get(i).toString());
+                    }
+                    halls.get(j).lunch.clear();
+                    for(int i=0;i<hallLunch.length();i++) {
+                        halls.get(j).lunch.add(hallLunch.get(i).toString());
+                    }
+
+                    halls.get(j).dinner.clear();
+                    for(int i=0;i<hallDinner.length();i++) {
+                        halls.get(j).dinner.add(hallDinner.get(i).toString());
+                    }
+
+                    halls.get(j).lateNight.clear();
+                    for(int i=0;i<hallLateNight.length();i++) {
+                        halls.get(j).lateNight.add(hallLateNight.get(i).toString());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.w("BruinLyfe", "Done parsing menu data!");
+        }
+    }
+
     public class DownloadTask extends AsyncTask<String, Void, String> {
         String finalResult = "";
 
@@ -336,15 +419,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 if(mHttpClient == null){
                     mHttpClient = new DefaultHttpClient();
                 }
-
-
                 httpGet = new HttpGet(urls[0]);
-
-
                 response = mHttpClient.execute(httpGet);
                 s = EntityUtils.toString(response.getEntity(), "UTF-8");
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -361,6 +438,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         public String getFinalResult() {
             return finalResult;
+        }
+    }
+
+    public class MenuDownloader extends DownloadTask {
+        @Override
+        protected  void onPostExecute(String result) {
+            Log.w("BruinLyfe", "Done downloading menu data!");
+            menuLoader.parseData(result);
         }
     }
 }
