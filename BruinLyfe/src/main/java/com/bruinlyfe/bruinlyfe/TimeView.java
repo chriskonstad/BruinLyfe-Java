@@ -2,9 +2,11 @@ package com.bruinlyfe.bruinlyfe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,13 +17,18 @@ import java.util.ArrayList;
  * Created by chris on 9/29/13.
  */
 public class TimeView extends LinearLayout {
+    private Vibrator vib;
 
     public TimeView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.time_view_res, this);
+
+        vib = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+
         this.setOnClickListener(onClickListener);
+        this.setOnTouchListener(onTouchListener);
     }
 
     public TimeView(Context context) {
@@ -31,11 +38,40 @@ public class TimeView extends LinearLayout {
     public void setOpenTime(String openTime) {
         TextView openView = (TextView)findViewById(R.id.textViewOpen);
         openView.setText(openTime);
+        if(openTime.contains("CLOSED")) {
+            openView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+        }
+        else {
+            openView.setTextColor(getResources().getColor(android.R.color.black));
+        }
     }
 
     public void setCloseTime(String closeTime) {
         TextView closeView = (TextView)findViewById(R.id.textViewClose);
         closeView.setText(closeTime);
+        if(closeTime.contains("CLOSED")) {
+            closeView.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+        }
+        else {
+            closeView.setTextColor(getResources().getColor(android.R.color.black));
+        }
+    }
+
+    public void setBackgroundColor(int color) {
+        TextView openView = (TextView)findViewById(R.id.textViewOpen);
+        TextView closeView = (TextView)findViewById(R.id.textViewClose);
+
+        openView.setBackgroundColor(color);
+        closeView.setBackgroundColor(color);
+
+    }
+
+    public void resetBackgroundColor() {
+        TextView openView = (TextView)findViewById(R.id.textViewOpen);
+        TextView closeView = (TextView)findViewById(R.id.textViewClose);
+
+        openView.setBackgroundColor(Integer.getInteger("#fff3f3f3", 16));
+        closeView.setBackgroundColor(Integer.getInteger("#fff3f3f3", 16));
     }
 
     // Create an anonymous implementation of OnClickListener
@@ -93,6 +129,25 @@ public class TimeView extends LinearLayout {
             if(intent.hasExtra("menuData"))   //only launch activity if there is data to load
                 main.startActivity(intent);
 
+        }
+    };
+
+    private OnTouchListener onTouchListener = new OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN ) {
+                //if pressed
+                vib.vibrate(50);
+                setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+                return false;   //false instead of true so that the click listener can handle it, too
+            }
+            else if(event.getAction() == MotionEvent.ACTION_UP) {
+                //if released
+                resetBackgroundColor();
+                return false;   //false instead of true so that event is forwarded to click listener
+            }
+
+            return false;
         }
     };
 }
