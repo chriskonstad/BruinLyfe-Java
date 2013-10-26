@@ -25,7 +25,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -284,25 +287,37 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             timeViews[30] = (TimeView)rootView.findViewById(R.id.timeViewRenDinner);
             timeViews[31] = (TimeView)rootView.findViewById(R.id.timeViewRenLateNight);
 
-            //Example code that works for later
-            /*
-            TableRow tableRow = (TableRow)rootView.findViewById(R.id.tableRowCovel);
-            TimeView tv = (TimeView)tableRow.getChildAt(1);
-            tv.setOpenTime("HELLO");
-            tv.setCloseTime("GOODBYE");
-            */
-
             int j = 1;
-            int timeCount = stringList.size();
-            int timeViewCount = timeViews.length;
-            Log.w("BruinLyfe", "TimeCount: " + String.valueOf(timeCount));
-            Log.w("BruinLyfe", "TimeViews: " + String.valueOf(timeViewCount));
             for(int i=0;i<timeViews.length;i++)
             {
                 if(stringList.size() >= j) {
-                timeViews[i].setOpenTime(stringList.get(j-1));
-                timeViews[i].setCloseTime(stringList.get(j));
-                j = j+2;
+                    timeViews[i].setOpenTime(stringList.get(j-1));
+                    timeViews[i].setCloseTime(stringList.get(j));
+                    //check to see if current time is in this time frame,
+                    //and if so, color the text green
+                    if(!stringList.get(j-1).contains("CLOSED") && !stringList.get(j).contains("CLOSED")) {
+                        try {
+                            Date currentDate = new Date();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("K:mma");
+                            Date openDate = dateFormat.parse(stringList.get(j-1), new ParsePosition(0));
+                            openDate.setYear(currentDate.getYear());
+                            openDate.setMonth(currentDate.getMonth());
+                            openDate.setDate(currentDate.getDate());
+                            Date closeDate = dateFormat.parse(stringList.get(j), new ParsePosition(0));
+                            closeDate.setYear(currentDate.getYear());
+                            closeDate.setMonth(currentDate.getMonth());
+                            if(closeDate.getHours() < 5)    //if less than 5am, then it is really the next day in the early morning, i.e. 2am
+                                closeDate.setDate(currentDate.getDate() + 1);
+                            else
+                                closeDate.setDate(currentDate.getDate());
+                            //If current time is in range [openTime, closeTime]
+                            if(currentDate.compareTo(openDate) != -1 && currentDate.compareTo(closeDate) != 1)
+                                timeViews[i].setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    j = j+2;
                 }
             }
         }
@@ -459,7 +474,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         @Override
         protected void onPostExecute(String result){
             //Do something cool?
-            Log.w("BruinLyfe", "Done downloading!");
+            Log.w("BruinLyfe", "Done downloading dining hours!");
             hoursFragment.fillDiningHours(hoursFragment.findMatches(result));
         }
 

@@ -74,6 +74,14 @@ public class TimeView extends LinearLayout {
         closeView.setBackgroundColor(Integer.getInteger("#fff3f3f3", 16));
     }
 
+    public void setTextColor(int color) {
+        TextView openView = (TextView)findViewById(R.id.textViewOpen);
+        TextView closeView = (TextView)findViewById(R.id.textViewClose);
+
+        openView.setTextColor(color);
+        closeView.setTextColor(color);
+    }
+
     // Create an anonymous implementation of OnClickListener
     private OnClickListener onClickListener = new OnClickListener() {
         public void onClick(View v) {
