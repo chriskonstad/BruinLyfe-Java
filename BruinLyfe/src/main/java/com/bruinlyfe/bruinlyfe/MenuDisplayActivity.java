@@ -3,9 +3,9 @@ package com.bruinlyfe.bruinlyfe;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,8 +19,29 @@ public class MenuDisplayActivity extends Activity {
 
         Intent intent = this.getIntent();
         List<String> meal = intent.getExtras().getStringArrayList("menuData");
+
+        List<Item> items = new ArrayList<Item>();
+        for(int i=0;i<meal.size();i++) {
+            //Check to see if the item is a section header
+            if(meal.get(i).toString().contains("\"title\"")) {
+                StringBuilder sb = new StringBuilder(meal.get(i).toString());
+                //Remove some JSON stuff
+                sb.delete(0, 10);
+                sb.delete(sb.length()-2, sb.length());
+                items.add(new Header(getLayoutInflater(), sb.toString()));
+
+            }
+            else {
+                items.add(new ListItem(getLayoutInflater(), meal.get(i).toString()));
+            }
+        }
+
+
         ListView lv = (ListView)findViewById(R.id.listViewMenu);
-        ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, meal);
-        lv.setAdapter(menuAdapter);
+        //ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, meal);
+        //lv.setAdapter(menuAdapter);
+
+        TwoTextArrayAdapter adapter = new TwoTextArrayAdapter(this, items);
+        lv.setAdapter(adapter);
     }
 }
