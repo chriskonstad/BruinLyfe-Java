@@ -110,23 +110,10 @@ public class TimeView extends LinearLayout {
                 }
             }
 
-            /*
-            if(id == R.id.timeViewCafe1919Breakfast) {
-                intent.putStringArrayListExtra("menuData", (ArrayList<String>)main.nineteen.breakfast);
-            }
-            else if(id == R.id.timeViewCovelBreakfast) {
-                intent.putStringArrayListExtra("menuData", (ArrayList<String>)main.covel.breakfast);
-            }
-            else if(id == R.id.timeViewCovelLunch) {
-                intent.putStringArrayListExtra("menuData", (ArrayList<String>)main.covel.lunch);
-            }
-            else if(id == R.id.timeViewCovelDinner) {
-                intent.putStringArrayListExtra("menuData", (ArrayList<String>)main.covel.dinner);
-            }
-            */
+            TextView openView = (TextView)v.findViewById(R.id.textViewOpen);
 
-
-            if(intent.hasExtra("menuData"))   //only launch activity if there is data to load
+            //Only launch menu-display activity if there is data to load and location is open
+            if(intent.hasExtra("menuData") && !openView.getText().equals("CLOSED"))
                 main.startActivity(intent);
 
         }

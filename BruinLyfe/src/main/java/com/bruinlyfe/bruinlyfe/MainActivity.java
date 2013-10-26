@@ -36,11 +36,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     HoursFragment hoursFragment;
     MenuLoader menuLoader;
 
+    public DiningHall bcafe = new DiningHall("bcafe", R.id.timeViewBcafeBreakfast, R.id.timeViewBcafeLunch, R.id.timeViewBcafeDinner, R.id.timeViewBcafeLateNight);
     public DiningHall covel = new DiningHall("covel", R.id.timeViewCovelBreakfast, R.id.timeViewCovelLunch, R.id.timeViewCovelDinner, R.id.timeViewCovelLateNight);
     public DiningHall deneve = new DiningHall("deneve", R.id.timeViewDeneveBreakfast, R.id.timeViewDeneveLunch, R.id.timeViewDeneveDinner, R.id.timeViewDeneveLateNight);
     public DiningHall feast = new DiningHall("feast", R.id.timeViewFeastBreakfast, R.id.timeViewFeastLunch, R.id.timeViewFeastDinner, R.id.timeViewFeastLateNight);
     public DiningHall hedrick = new DiningHall("hedrick", R.id.timeViewHedrickBreakfast, R.id.timeViewHedrickLunch, R.id.timeViewHedrickDinner, R.id.timeViewHedrickLateNight);
     public DiningHall nineteen = new DiningHall("nineteen", R.id.timeViewCafe1919Breakfast, R.id.timeViewCafe1919Lunch, R.id.timeViewCafe1919Dinner, R.id.timeViewCafe1919LateNight);
+    public DiningHall rende = new DiningHall("rende", R.id.timeViewRenBreakfast, R.id.timeViewRenLunch, R.id.timeViewRenDinner, R.id.timeViewRenLateNight);
 
     List<DiningHall> halls = new ArrayList<DiningHall>();   //TODO: Append dining halls
 
@@ -99,11 +101,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
 
         //Build halls list
+        halls.add(bcafe);
         halls.add(covel);
         halls.add(deneve);
         halls.add(feast);
         halls.add(hedrick);
         halls.add(nineteen);
+        halls.add(rende);
 
         menuLoader = new MenuLoader();
     }
@@ -374,8 +378,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                         hallDinner = hallData.getJSONArray("dinner");
                     else
                         hallDinner = new JSONArray();
-                    if(hallData.has("lateNight"))
-                        hallLateNight = hallData.getJSONArray("lateNight");
+                    if(allData.has("late")) //lateNight is in the root object
+                        hallLateNight = allData.getJSONArray("late");
                     else
                         hallLateNight = new JSONArray();
 
@@ -400,6 +404,29 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            //Special case for special dining halls
+            try {
+                allData = new JSONObject(data);
+                JSONArray rendeData = allData.getJSONArray("rende");
+                for(int i=0;i<rendeData.length();i++) {
+                    final int r = 6;
+                    halls.get(r).breakfast.add(rendeData.get(i).toString());
+                    halls.get(r).lunch.add(rendeData.get(i).toString());
+                    halls.get(r).dinner.add(rendeData.get(i).toString());
+                    halls.get(r).lateNight.add(rendeData.get(i).toString());
+                }
+                JSONArray bcafeData = allData.getJSONArray("bcafe");
+                for(int i=0;i<bcafeData.length();i++) {
+                    final int b = 0;
+                    halls.get(b).breakfast.add(bcafeData.get(i).toString());
+                    halls.get(b).lunch.add(bcafeData.get(i).toString());
+                    halls.get(b).dinner.add(bcafeData.get(i).toString());
+                    halls.get(b).lateNight.add(bcafeData.get(i).toString());
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
             }
             Log.w("BruinLyfe", "Done parsing menu data!");
         }
