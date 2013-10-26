@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -121,8 +122,21 @@ public class TimeView extends LinearLayout {
             TextView openView = (TextView)v.findViewById(R.id.textViewOpen);
 
             //Only launch menu-display activity if there is data to load and location is open
-            if(intent.hasExtra("menuData") && !openView.getText().equals("CLOSED"))
+            if(intent.hasExtra("menuData") && !openView.getText().toString().contains("CLOSED")) {
                 main.startActivity(intent);
+            }
+            else if(intent.hasExtra("menuData") && openView.getText().toString().contains("CLOSED")) {
+                Toast toast = Toast.makeText(v.getContext(), "Location closed", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else if(!intent.hasExtra("menuData") && openView.getText().toString().contains("CLOSED")) {
+                Toast toast = Toast.makeText(v.getContext(), "Location closed", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else {
+                Toast toast = Toast.makeText(v.getContext(), "No menu data", Toast.LENGTH_SHORT);
+                toast.show();
+            }
 
         }
     };
