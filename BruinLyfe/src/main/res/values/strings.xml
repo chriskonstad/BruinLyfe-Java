@@ -3,14 +3,6 @@
 
     <string name="app_name" >BruinLyfe
     </string>
-    <string name="action_settings" >Settings
-    </string>
-    <string name="title_section1" >Dining Hours
-    </string>
-    <string name="title_section2" >Section 2
-    </string>
-    <string name="title_section3" >Section 3
-    </string>
 
     <string name="location" >Location</string>
     <string name="breakfast" >Breakfast</string>
