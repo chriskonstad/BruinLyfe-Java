@@ -2,6 +2,7 @@ package com.bruinlyfe.bruinlyfe;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -114,8 +115,20 @@ public class MainActivity extends FragmentActivity {
                         closeDate.set(Calendar.YEAR, currentDate.get(Calendar.YEAR));
                         closeDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH));
                         closeDate.set(Calendar.DAY_OF_MONTH, currentDate.get(Calendar.DAY_OF_MONTH));
-                        if(closeDate.get(Calendar.HOUR_OF_DAY) < 5)    //if less than 5am, then it is really the next day in the early morning, i.e. 2am
+                        if(closeDate.get(Calendar.HOUR_OF_DAY) < 5 && currentDate.get(Calendar.HOUR_OF_DAY) >= 5) {  //if less than 5am, then it is really the next day in the early morning, i.e. 2am
                             closeDate.set(Calendar.DAY_OF_MONTH, currentDate.get(Calendar.DAY_OF_MONTH) + 1);
+                            Log.w("BruinLyfe", "HAD TO ADD ONE DAY TO THE CLOSE TIME");
+                        }
+
+                        //If the openDate was really the day before
+                        if(openDate.get(Calendar.HOUR_OF_DAY) > 20 && currentDate.get(Calendar.HOUR_OF_DAY) <= 5) {
+                            openDate.set(Calendar.DAY_OF_MONTH, openDate.get(Calendar.DAY_OF_MONTH) - 1);
+                        }
+
+                        Log.w("BruinLyfe", "-------------------------------------");
+                        Log.w("BruinLyfe", "OPEN DATE: " + openDate.get(Calendar.DAY_OF_MONTH) + '\t' + openDate.get(Calendar.HOUR_OF_DAY));
+                        Log.w("BruinLyfe", "CURRENT DATE: " + currentDate.get(Calendar.DAY_OF_MONTH) + '\t' + currentDate.get(Calendar.HOUR_OF_DAY));
+                        Log.w("BruinLyfe", "CLOSE DATE: " + closeDate.get(Calendar.DAY_OF_MONTH) + '\t' + closeDate.get(Calendar.HOUR_OF_DAY));
                         //If current time is in range [openTime, closeTime]
                         if(currentDate.compareTo(openDate) != -1 && currentDate.compareTo(closeDate) != 1)
                             timeViews[i].setTextColor(getResources().getColor(android.R.color.holo_green_dark));

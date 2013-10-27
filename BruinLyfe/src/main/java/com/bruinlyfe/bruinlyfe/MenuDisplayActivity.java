@@ -38,9 +38,6 @@ public class MenuDisplayActivity extends Activity {
 
 
         ListView lv = (ListView)findViewById(R.id.listViewMenu);
-        //ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, meal);
-        //lv.setAdapter(menuAdapter);
-
         TwoTextArrayAdapter adapter = new TwoTextArrayAdapter(this, items);
         lv.setAdapter(adapter);
     }
