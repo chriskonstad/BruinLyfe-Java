@@ -121,7 +121,7 @@ public class MainActivity extends FragmentActivity {
                         }
 
                         //If the openDate was really the day before
-                        if(openDate.get(Calendar.HOUR_OF_DAY) > 20 && currentDate.get(Calendar.HOUR_OF_DAY) <= 5) {
+                        if(openDate.compareTo(closeDate) == 1) {    //if open date is after close date (i.e. late night)
                             openDate.set(Calendar.DAY_OF_MONTH, openDate.get(Calendar.DAY_OF_MONTH) - 1);
                         }
 
