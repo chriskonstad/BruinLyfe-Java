@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -102,19 +102,20 @@ public class MainActivity extends FragmentActivity {
                 //and if so, color the text green
                 if(!stringList.get(j-1).contains("CLOSED") && !stringList.get(j).contains("CLOSED")) {
                     try {
-                        Date currentDate = new Date();
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("K:mma");
-                        Date openDate = dateFormat.parse(stringList.get(j-1), new ParsePosition(0));
-                        openDate.setYear(currentDate.getYear());
-                        openDate.setMonth(currentDate.getMonth());
-                        openDate.setDate(currentDate.getDate());
-                        Date closeDate = dateFormat.parse(stringList.get(j), new ParsePosition(0));
-                        closeDate.setYear(currentDate.getYear());
-                        closeDate.setMonth(currentDate.getMonth());
-                        if(closeDate.getHours() < 5)    //if less than 5am, then it is really the next day in the early morning, i.e. 2am
-                            closeDate.setDate(currentDate.getDate() + 1);
-                        else
-                            closeDate.setDate(currentDate.getDate());
+                        Calendar currentDate = Calendar.getInstance();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mma");
+                        Calendar openDate = Calendar.getInstance();
+                        openDate.setTime(dateFormat.parse(stringList.get(j-1), new ParsePosition(0)));
+                        openDate.set(Calendar.YEAR, currentDate.get(Calendar.YEAR));
+                        openDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH));
+                        openDate.set(Calendar.DAY_OF_MONTH, currentDate.get(Calendar.DAY_OF_MONTH));
+                        Calendar closeDate = Calendar.getInstance();
+                        closeDate.setTime(dateFormat.parse(stringList.get(j), new ParsePosition(0)));
+                        closeDate.set(Calendar.YEAR, currentDate.get(Calendar.YEAR));
+                        closeDate.set(Calendar.MONTH, currentDate.get(Calendar.MONTH));
+                        closeDate.set(Calendar.DAY_OF_MONTH, currentDate.get(Calendar.DAY_OF_MONTH));
+                        if(closeDate.get(Calendar.HOUR_OF_DAY) < 5)    //if less than 5am, then it is really the next day in the early morning, i.e. 2am
+                            closeDate.set(Calendar.DAY_OF_MONTH, currentDate.get(Calendar.DAY_OF_MONTH) + 1);
                         //If current time is in range [openTime, closeTime]
                         if(currentDate.compareTo(openDate) != -1 && currentDate.compareTo(closeDate) != 1)
                             timeViews[i].setTextColor(getResources().getColor(android.R.color.holo_green_dark));
