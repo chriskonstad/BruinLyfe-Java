@@ -1,5 +1,7 @@
 package com.bruinlyfe.bruinlyfe;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -14,6 +16,7 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends FragmentActivity {
     MenuLoader menuLoader;
+    SharedPreferences prefs = null;
 
     public DiningHall bcafe = new DiningHall("bcafe", R.id.timeViewBcafeBreakfast, R.id.timeViewBcafeLunch, R.id.timeViewBcafeDinner, R.id.timeViewBcafeLateNight);
     public DiningHall covel = new DiningHall("covel", R.id.timeViewCovelBreakfast, R.id.timeViewCovelLunch, R.id.timeViewCovelDinner, R.id.timeViewCovelLateNight);
@@ -41,6 +44,13 @@ public class MainActivity extends FragmentActivity {
 
         menuLoader = new MenuLoader(halls);
         loadInfo();
+
+        //Check if first run, and if so, then load the tutorial
+        prefs = getSharedPreferences("com.bruinlyfe.bruinlyfe", MODE_PRIVATE);
+        if(prefs.getBoolean("firstRun", true)) {
+            Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void loadInfo() {
