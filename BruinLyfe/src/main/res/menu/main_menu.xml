@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- xmlns:bruinlyfe="http://schemas.android.com/apk/res-auto"> -->
+
+    <!-- <item android:id="@+id/action_swipe_calculator"
+        android:title="@string/action_swipe_calculator"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_data_usage"/> -->
+
+    <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:orderInCategory="150"
+        android:showAsAction="always"
+        android:title="Refresh"/>
+
+    <item android:id="@+id/action_about"
+        android:title="@string/action_about"
+        android:orderInCategory="200"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_about"/>
+</menu>

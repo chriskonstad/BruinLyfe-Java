@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -17,6 +19,7 @@ import java.util.regex.Pattern;
 public class MainActivity extends FragmentActivity {
     MenuLoader menuLoader;
     SharedPreferences prefs = null;
+    MenuItem menuItem = null;
 
     public DiningHall bcafe = new DiningHall("bcafe", R.id.timeViewBcafeBreakfast, R.id.timeViewBcafeLunch, R.id.timeViewBcafeDinner, R.id.timeViewBcafeLateNight);
     public DiningHall covel = new DiningHall("covel", R.id.timeViewCovelBreakfast, R.id.timeViewCovelLunch, R.id.timeViewCovelDinner, R.id.timeViewCovelLateNight);
@@ -53,55 +56,73 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        //menuItem = (MenuItem) menu.findItem(R.id.action_refresh);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        menuItem = menu.findItem(R.id.action_refresh);
+        startProgressBar();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(intent);
+                return true;
+            //case R.id.action_swipe_calculator:
+                //return true;
+            case R.id.action_refresh:
+                loadInfo();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void loadInfo() {
         DownloadTask dTask;
         dTask = new DownloadTask();
         dTask.setParentFragment(this);
+        startProgressBar();
         dTask.execute("http://secure5.ha.ucla.edu/restauranthours/dining-hall-hours-by-day.cfm");
     }
 
+    public void startProgressBar() {
+        try {
+            menuItem.setActionView(R.layout.progressbar);
+            menuItem.expandActionView();
+            TimeView[] timeViews = initTimeViewList();
+            for(int i=0;i<timeViews.length;i++) {
+                timeViews[i].setOpenTime("LOADING");
+                timeViews[i].setCloseTime("LOADING");
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopProgressBar() {
+        if(menuItem != null) {
+            menuItem.collapseActionView();
+            menuItem.setActionView(null);
+        }
+    }
+
     public void fillDiningHours(List<String> stringList) {
-        TimeView[] timeViews;
-        timeViews = new TimeView[32];
-        timeViews[0] = (TimeView)findViewById(R.id.timeViewBcafeBreakfast);
-        timeViews[1] = (TimeView)findViewById(R.id.timeViewBcafeLunch);
-        timeViews[2] = (TimeView)findViewById(R.id.timeViewBcafeDinner);
-        timeViews[3] = (TimeView)findViewById(R.id.timeViewBcafeLateNight);
-
-        timeViews[4] = (TimeView)findViewById(R.id.timeViewBplateBreakfast);
-        timeViews[5] = (TimeView)findViewById(R.id.timeViewBplateLunch);
-        timeViews[6] = (TimeView)findViewById(R.id.timeViewBplateDinner);
-        timeViews[7] = (TimeView)findViewById(R.id.timeViewBplateLateNight);
-
-        timeViews[8] = (TimeView)findViewById(R.id.timeViewCafe1919Breakfast);
-        timeViews[9] = (TimeView)findViewById(R.id.timeViewCafe1919Lunch);
-        timeViews[10] = (TimeView)findViewById(R.id.timeViewCafe1919Dinner);
-        timeViews[11] = (TimeView)findViewById(R.id.timeViewCafe1919LateNight);
-
-        timeViews[12] = (TimeView)findViewById(R.id.timeViewCovelBreakfast);
-        timeViews[13] = (TimeView)findViewById(R.id.timeViewCovelLunch);
-        timeViews[14] = (TimeView)findViewById(R.id.timeViewCovelDinner);
-        timeViews[15] = (TimeView)findViewById(R.id.timeViewCovelLateNight);
-
-        timeViews[16] = (TimeView)findViewById(R.id.timeViewDeneveBreakfast);
-        timeViews[17] = (TimeView)findViewById(R.id.timeViewDeneveLunch);
-        timeViews[18] = (TimeView)findViewById(R.id.timeViewDeneveDinner);
-        timeViews[19] = (TimeView)findViewById(R.id.timeViewDeneveLateNight);
-
-        timeViews[20] = (TimeView)findViewById(R.id.timeViewFeastBreakfast);
-        timeViews[21] = (TimeView)findViewById(R.id.timeViewFeastLunch);
-        timeViews[22] = (TimeView)findViewById(R.id.timeViewFeastDinner);
-        timeViews[23] = (TimeView)findViewById(R.id.timeViewFeastLateNight);
-
-        timeViews[24] = (TimeView)findViewById(R.id.timeViewHedrickBreakfast);
-        timeViews[25] = (TimeView)findViewById(R.id.timeViewHedrickLunch);
-        timeViews[26] = (TimeView)findViewById(R.id.timeViewHedrickDinner);
-        timeViews[27] = (TimeView)findViewById(R.id.timeViewHedrickLateNight);
-
-        timeViews[28] = (TimeView)findViewById(R.id.timeViewRenBreakfast);
-        timeViews[29] = (TimeView)findViewById(R.id.timeViewRenLunch);
-        timeViews[30] = (TimeView)findViewById(R.id.timeViewRenDinner);
-        timeViews[31] = (TimeView)findViewById(R.id.timeViewRenLateNight);
+        TimeView[] timeViews = initTimeViewList();
 
         int j = 1;
         for(int i=0;i<timeViews.length;i++)
@@ -149,6 +170,7 @@ public class MainActivity extends FragmentActivity {
                 j = j+2;
             }
         }
+        stopProgressBar();
     }
 
     public List<String> findMatches(String htmlSource) {
@@ -183,5 +205,51 @@ public class MainActivity extends FragmentActivity {
         }
 
         return cleanMatches;
+    }
+
+    private TimeView[] initTimeViewList() {
+        TimeView[] timeViews;
+        timeViews = new TimeView[32];
+        timeViews[0] = (TimeView)findViewById(R.id.timeViewBcafeBreakfast);
+        timeViews[1] = (TimeView)findViewById(R.id.timeViewBcafeLunch);
+        timeViews[2] = (TimeView)findViewById(R.id.timeViewBcafeDinner);
+        timeViews[3] = (TimeView)findViewById(R.id.timeViewBcafeLateNight);
+
+        timeViews[4] = (TimeView)findViewById(R.id.timeViewBplateBreakfast);
+        timeViews[5] = (TimeView)findViewById(R.id.timeViewBplateLunch);
+        timeViews[6] = (TimeView)findViewById(R.id.timeViewBplateDinner);
+        timeViews[7] = (TimeView)findViewById(R.id.timeViewBplateLateNight);
+
+        timeViews[8] = (TimeView)findViewById(R.id.timeViewCafe1919Breakfast);
+        timeViews[9] = (TimeView)findViewById(R.id.timeViewCafe1919Lunch);
+        timeViews[10] = (TimeView)findViewById(R.id.timeViewCafe1919Dinner);
+        timeViews[11] = (TimeView)findViewById(R.id.timeViewCafe1919LateNight);
+
+        timeViews[12] = (TimeView)findViewById(R.id.timeViewCovelBreakfast);
+        timeViews[13] = (TimeView)findViewById(R.id.timeViewCovelLunch);
+        timeViews[14] = (TimeView)findViewById(R.id.timeViewCovelDinner);
+        timeViews[15] = (TimeView)findViewById(R.id.timeViewCovelLateNight);
+
+        timeViews[16] = (TimeView)findViewById(R.id.timeViewDeneveBreakfast);
+        timeViews[17] = (TimeView)findViewById(R.id.timeViewDeneveLunch);
+        timeViews[18] = (TimeView)findViewById(R.id.timeViewDeneveDinner);
+        timeViews[19] = (TimeView)findViewById(R.id.timeViewDeneveLateNight);
+
+        timeViews[20] = (TimeView)findViewById(R.id.timeViewFeastBreakfast);
+        timeViews[21] = (TimeView)findViewById(R.id.timeViewFeastLunch);
+        timeViews[22] = (TimeView)findViewById(R.id.timeViewFeastDinner);
+        timeViews[23] = (TimeView)findViewById(R.id.timeViewFeastLateNight);
+
+        timeViews[24] = (TimeView)findViewById(R.id.timeViewHedrickBreakfast);
+        timeViews[25] = (TimeView)findViewById(R.id.timeViewHedrickLunch);
+        timeViews[26] = (TimeView)findViewById(R.id.timeViewHedrickDinner);
+        timeViews[27] = (TimeView)findViewById(R.id.timeViewHedrickLateNight);
+
+        timeViews[28] = (TimeView)findViewById(R.id.timeViewRenBreakfast);
+        timeViews[29] = (TimeView)findViewById(R.id.timeViewRenLunch);
+        timeViews[30] = (TimeView)findViewById(R.id.timeViewRenDinner);
+        timeViews[31] = (TimeView)findViewById(R.id.timeViewRenLateNight);
+
+        return timeViews;
     }
 }

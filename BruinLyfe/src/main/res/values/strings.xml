@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" >BruinLyfe
-    </string>
-
-    <string name="location" >Location</string>
-    <string name="breakfast" >Breakfast</string>
-    <string name="lunch" >Lunch</string>
-    <string name="dinner" >Dinner</string>
-    <string name="late_night" >Late Night</string>
-
-    <string name="bcafe" >Bruin Cafe</string>
-    <string name="bplate" >Bruin Plate</string>
-    <string name="cafe1919" >Cafe 1919</string>
-    <string name="covel" >Covel</string>
-    <string name="deneve" >De Neve</string>
+    <string name="app_name">BruinLyfe</string>
+    <string name="location">Location</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="late_night">Late Night</string>
+    <string name="bcafe">Bruin Cafe</string>
+    <string name="bplate">Bruin Plate</string>
+    <string name="cafe1919">Cafe 1919</string>
+    <string name="covel">Covel</string>
+    <string name="deneve">De Neve</string>
     <string name="feast">Feast</string>
     <string name="hedrick">Hedrick</string>
     <string name="rendezvous">Rendezvous</string>
-
     <string name="closed">CLOSED</string>
+    <string name="title_activity_about">About Us</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_swipe_calculator">Swipe Calculator</string>
+    <string name="action_about">About</string>
+
+    <string name="about_text">Thank you for using Bruin Lyfe!  It was developed by two UCLA computer science students.
+        \n\n
+        It is free and open source, meaning you can modify it if you want to (or just look at the source code if you\'re interested).
+        \n\n
+        You can view the source at http://github.com/chriskonstad/BruinLyfe-Java.
+        \n\n
+        The web-parsing backend code is at http://github.com/mistabrando/bruinlyfe.
+        \n\n
+        Bruin Lyfe is not affiliated with either Bruin Life (the iOS app) or UCLA.
+        \n\n
+        Thanks for using it!
+        \n\n
+        Chris Konstad
+        \n
+        Cheng Cheng</string>
 
 </resources>

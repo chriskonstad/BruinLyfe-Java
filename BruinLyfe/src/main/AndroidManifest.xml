@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bruinlyfe.bruinlyfe"
-    android:versionCode="8"
-    android:versionName="1.2.0" >
+    android:versionCode="9"
+    android:versionName="1.3.0" >
 
     <uses-sdk
-        android:minSdkVersion="9"
+        android:minSdkVersion="14"
         android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,17 +27,23 @@
         </activity>
         <activity
             android:name="com.bruinlyfe.bruinlyfe.MenuDisplayActivity"
-            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity"
-            android:label="Menu">
-            </activity>
+            android:label="Menu"
+            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity" >
+        </activity>
         <activity
             android:name="com.bruinlyfe.bruinlyfe.TutorialActivity"
-            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity"
             android:label="Tutorial"
-            android:theme="@style/Transparent"
-            >
+            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity"
+            android:theme="@style/Transparent" >
         </activity>
-
+        <activity
+            android:name="com.bruinlyfe.bruinlyfe.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bruinlyfe.bruinlyfe.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
