@@ -10,8 +10,8 @@
             android:text="Header"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#536895"
-            android:textColor="#FFB300"
+            android:background="@color/ucla_blue"
+            android:textColor="@color/ucla_gold"
             android:textSize="21dip"/>
 
 </LinearLayout>

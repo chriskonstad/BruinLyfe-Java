@@ -137,7 +137,6 @@ public class TimeView extends LinearLayout {
                 Toast toast = Toast.makeText(v.getContext(), "No menu data", Toast.LENGTH_SHORT);
                 toast.show();
             }
-
         }
     };
 
@@ -147,15 +146,12 @@ public class TimeView extends LinearLayout {
             if (event.getAction() == MotionEvent.ACTION_DOWN ) {
                 //if pressed
                 vib.vibrate(50);
-                setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
-                return false;   //false instead of true so that the click listener can handle it, too
+                setBackgroundColor(getResources().getColor(R.color.ucla_gold));
             }
             else if(event.getAction() == MotionEvent.ACTION_UP) {
                 //if released
                 resetBackgroundColor();
-                return false;   //false instead of true so that event is forwarded to click listener
             }
-
             return false;
         }
     };

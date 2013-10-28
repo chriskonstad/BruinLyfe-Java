@@ -12,16 +12,17 @@ import java.util.List;
  */
 public class MenuLoader {
     private List<DiningHall> halls;
+    public MainActivity mainActivity;
 
     public MenuLoader(List<DiningHall> allHalls) {
         halls = allHalls;
-        downloadMenuData(); //temporary
     }
 
     public void downloadMenuData() {
         MenuDownloader dTask;
         dTask = new MenuDownloader();
         dTask.setMenuLoader(this);
+        dTask.message = "!!!!!!!!!!!!DOWNLOADING MENU DATA!!!!!!!!!!!!";
         dTask.execute("http://rest.s3for.me/06161995/mealdata.json");
     }
 
@@ -118,9 +119,6 @@ public class MenuLoader {
         } catch(Exception e) {
             e.printStackTrace();
         }
-
-
-
         Log.w("BruinLyfe", "Done parsing menu data!");
     }
 }

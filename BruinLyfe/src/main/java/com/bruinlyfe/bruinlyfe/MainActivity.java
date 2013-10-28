@@ -1,12 +1,16 @@
 package com.bruinlyfe.bruinlyfe;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -20,6 +24,7 @@ public class MainActivity extends FragmentActivity {
     MenuLoader menuLoader;
     SharedPreferences prefs = null;
     MenuItem menuItem = null;
+    final String hoursDeliminator = "\n";
 
     public DiningHall bcafe = new DiningHall("bcafe", R.id.timeViewBcafeBreakfast, R.id.timeViewBcafeLunch, R.id.timeViewBcafeDinner, R.id.timeViewBcafeLateNight);
     public DiningHall covel = new DiningHall("covel", R.id.timeViewCovelBreakfast, R.id.timeViewCovelLunch, R.id.timeViewCovelDinner, R.id.timeViewCovelLateNight);
@@ -36,6 +41,8 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frag_dining_hours);
 
+        Log.w("BruinLyfe", "!!!!!!!!!!!!Starting Application!!!!!!!!!!!!");
+
         //Build halls list
         halls.add(bcafe);
         halls.add(covel);
@@ -45,24 +52,27 @@ public class MainActivity extends FragmentActivity {
         halls.add(nineteen);
         halls.add(rende);
 
+        prefs = getSharedPreferences("com.bruinlyfe.bruinlyfe", MODE_PRIVATE);
+
         menuLoader = new MenuLoader(halls);
-        loadInfo();
+        menuLoader.mainActivity = this;
+
+        //Information is loaded when the options menu is created so that the progressbar
+        //can appear in the menu!
 
         //Check if first run, and if so, then load the tutorial
-        prefs = getSharedPreferences("com.bruinlyfe.bruinlyfe", MODE_PRIVATE);
         if(prefs.getBoolean("firstRun", true)) {
             Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
             startActivity(intent);
         }
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        //menuItem = (MenuItem) menu.findItem(R.id.action_refresh);
-        return true;
-    }
-
+    //Dear Future Me or maintainer,
+    //I apologize in advance for making this function start the useful part of this app.
+    //But I had to in order to make the progress bar spin upon startup with having a NPE.
+    //I could do it better in Qt or C++, but I don't know Java that well, yet.
+    //Thanks for keeping the code up to date!
+    //Past Me
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -70,6 +80,7 @@ public class MainActivity extends FragmentActivity {
 
         menuItem = menu.findItem(R.id.action_refresh);
         startProgressBar();
+        loadInfo(false);
         return true;
     }
 
@@ -86,18 +97,69 @@ public class MainActivity extends FragmentActivity {
             //case R.id.action_swipe_calculator:
                 //return true;
             case R.id.action_refresh:
-                loadInfo();
+                loadInfo(true);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void loadInfo() {
-        DownloadTask dTask;
-        dTask = new DownloadTask();
-        dTask.setParentFragment(this);
-        startProgressBar();
-        dTask.execute("http://secure5.ha.ucla.edu/restauranthours/dining-hall-hours-by-day.cfm");
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Force a menu update, which is basically the starting point of this app
+        invalidateOptionsMenu();
+    }
+
+
+    public void loadInfo(boolean forceRefresh) {
+        //Use cache if the cache is recent
+        if(forceRefresh == false && prefs.getInt("dayCacheTime", -1) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH) &&
+                prefs.getInt("dayCacheMenu", -1) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
+            Log.w("BruinLyfe", "!!!!!!!!!!!!LOADING DATA FROM CACHE!!!!!!!!!!!!");
+            stopProgressBar();
+
+            //Load the dining hall hours
+            String listOfHoursAsString = prefs.getString("hours", "default");
+            if(listOfHoursAsString.equals("default")) {
+                loadInfo(true); //force a refresh
+            }
+            String[] items = listOfHoursAsString.split(hoursDeliminator);
+            List<String> list = new ArrayList<String>();
+            for(int i=0; i < items.length; i++){
+                list.add(items[i]);
+            }
+            fillDiningHours(list);
+
+            //Load the menu data
+            String menuData = prefs.getString("menuData", "default");
+            if(menuData.equals("default")) {
+                loadInfo(true);
+            }
+            menuLoader.parseData(prefs.getString("menuData", ""));
+
+            Log.w("BruinLyfe", "!!!!!!!!!!!!LOADED DATA FROM CACHE!!!!!!!!!!!!");
+        }
+        else {
+            if(isNetworkAvailable()) {
+                Toast toast = Toast.makeText(getApplicationContext(), "Downloading Data...", Toast.LENGTH_SHORT);
+                toast.show();
+                //Load the hours data
+                DownloadTask dTask;
+                dTask = new DownloadTask();
+                dTask.myMainActivity = this;
+                dTask.message = "!!!!!!!!!!!!DOWNLOADING HOURS DATA!!!!!!!!!!!!";
+                startProgressBar();
+                dTask.execute("http://secure5.ha.ucla.edu/restauranthours/dining-hall-hours-by-day.cfm");
+
+                //Load the menu data
+                menuLoader.downloadMenuData();
+            }
+            else {
+                Toast toast = Toast.makeText(getApplicationContext(), "No internet connection!", Toast.LENGTH_LONG);
+                toast.show();
+                stopProgressBar();
+            }
+        }
     }
 
     public void startProgressBar() {
@@ -115,19 +177,25 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void stopProgressBar() {
-        if(menuItem != null) {
+        try {
             menuItem.collapseActionView();
             menuItem.setActionView(null);
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void fillDiningHours(List<String> stringList) {
+        //Display the dining hall hours
         TimeView[] timeViews = initTimeViewList();
 
         int j = 1;
         for(int i=0;i<timeViews.length;i++)
         {
-            if(stringList.size() >= j) {
+            if(stringList.size() <= j) {
+                loadInfo(true);
+            }
+            if(stringList.size() > j) {
                 timeViews[i].setOpenTime(stringList.get(j-1));
                 timeViews[i].setCloseTime(stringList.get(j));
                 //check to see if current time is in this time frame,
@@ -148,7 +216,7 @@ public class MainActivity extends FragmentActivity {
                         closeDate.set(Calendar.DAY_OF_MONTH, currentDate.get(Calendar.DAY_OF_MONTH));
                         if(closeDate.get(Calendar.HOUR_OF_DAY) < 5 && currentDate.get(Calendar.HOUR_OF_DAY) >= 5) {  //if less than 5am, then it is really the next day in the early morning, i.e. 2am
                             closeDate.set(Calendar.DAY_OF_MONTH, currentDate.get(Calendar.DAY_OF_MONTH) + 1);
-                            Log.w("BruinLyfe", "HAD TO ADD ONE DAY TO THE CLOSE TIME");
+                            //Log.w("BruinLyfe", "HAD TO ADD ONE DAY TO THE CLOSE TIME");
                         }
 
                         //If the openDate was really the day before
@@ -156,10 +224,10 @@ public class MainActivity extends FragmentActivity {
                             openDate.set(Calendar.DAY_OF_MONTH, openDate.get(Calendar.DAY_OF_MONTH) - 1);
                         }
 
-                        Log.w("BruinLyfe", "-------------------------------------");
-                        Log.w("BruinLyfe", "OPEN DATE: " + openDate.get(Calendar.DAY_OF_MONTH) + '\t' + openDate.get(Calendar.HOUR_OF_DAY));
-                        Log.w("BruinLyfe", "CURRENT DATE: " + currentDate.get(Calendar.DAY_OF_MONTH) + '\t' + currentDate.get(Calendar.HOUR_OF_DAY));
-                        Log.w("BruinLyfe", "CLOSE DATE: " + closeDate.get(Calendar.DAY_OF_MONTH) + '\t' + closeDate.get(Calendar.HOUR_OF_DAY));
+                        //Log.w("BruinLyfe", "-------------------------------------");
+                        //Log.w("BruinLyfe", "OPEN DATE: " + openDate.get(Calendar.DAY_OF_MONTH) + '\t' + openDate.get(Calendar.HOUR_OF_DAY));
+                        //Log.w("BruinLyfe", "CURRENT DATE: " + currentDate.get(Calendar.DAY_OF_MONTH) + '\t' + currentDate.get(Calendar.HOUR_OF_DAY));
+                        //Log.w("BruinLyfe", "CLOSE DATE: " + closeDate.get(Calendar.DAY_OF_MONTH) + '\t' + closeDate.get(Calendar.HOUR_OF_DAY));
                         //If current time is in range [openTime, closeTime]
                         if(currentDate.compareTo(openDate) != -1 && currentDate.compareTo(closeDate) != 1)
                             timeViews[i].setTextColor(getResources().getColor(android.R.color.holo_green_dark));
@@ -207,6 +275,22 @@ public class MainActivity extends FragmentActivity {
         return cleanMatches;
     }
 
+    public void cacheHoursData(List<String> stringList) {
+        //Cache the dining hall hours
+        StringBuilder listAsString = new StringBuilder();
+        for(String s : stringList){
+            listAsString.append(s);
+            listAsString.append(hoursDeliminator);
+        }
+        prefs.edit().putString("hours", listAsString.toString()).commit();
+        prefs.edit().putInt("dayCacheTime", Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).commit();    //record when the cache was created
+    }
+
+    public void cacheMenuData(String rawJsonResult) {
+        prefs.edit().putString("menuData", rawJsonResult).commit();
+        prefs.edit().putInt("dayCacheMenu", Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).commit();    //record when the cache was created
+    }
+
     private TimeView[] initTimeViewList() {
         TimeView[] timeViews;
         timeViews = new TimeView[32];
@@ -251,5 +335,14 @@ public class MainActivity extends FragmentActivity {
         timeViews[31] = (TimeView)findViewById(R.id.timeViewRenLateNight);
 
         return timeViews;
+    }
+
+    //Check if there is an internet connection
+    //http://stackoverflow.com/questions/4238921/android-detect-whether-there-is-an-internet-connection-available
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 }

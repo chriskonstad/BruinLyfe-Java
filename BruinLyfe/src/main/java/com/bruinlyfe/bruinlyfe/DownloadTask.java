@@ -10,20 +10,19 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by chris on 10/26/13.
  */
 public class DownloadTask extends AsyncTask<String, Void, String> {
     String finalResult = "";
-    MainActivity myMainActivity;
-
-    public void setParentFragment(MainActivity mA) {
-        myMainActivity = mA;
-    }
+    public String message = "";
+    public MainActivity myMainActivity;
 
     @Override
     protected String doInBackground(String... urls) {
+        Log.w("BruinLyfe", message);
         HttpResponse response = null;
         HttpGet httpGet = null;
         HttpClient mHttpClient = null;
@@ -46,10 +45,11 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result){
         //Do something cool?
-        Log.w("BruinLyfe", "Done downloading dining hours!");
-        myMainActivity.fillDiningHours(myMainActivity.findMatches(result));
+        Log.w("BruinLyfe", "!!!!!!!!!!!!DOWNLOADED HOURS!!!!!!!!!!!!");
+        List<String> matchList = myMainActivity.findMatches(result);
+        myMainActivity.cacheHoursData(matchList);
+        myMainActivity.fillDiningHours(matchList);
     }
-
     public String getFinalResult() {
         return finalResult;
     }
