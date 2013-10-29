@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by chris on 9/29/13.
@@ -93,28 +95,44 @@ public class TimeView extends LinearLayout {
 
             Intent intent = new Intent(v.getRootView().getContext(), MenuDisplayActivity.class);
 
+            Map<String, String> hallMap = new HashMap<String, String>();
+            hallMap.put("bcafe", getResources().getString(R.string.bcafe));
+            hallMap.put("covel", getResources().getString(R.string.covel));
+            hallMap.put("deneve", getResources().getString(R.string.deneve));
+            hallMap.put("feast", getResources().getString(R.string.feast));
+            hallMap.put("hedrick", getResources().getString(R.string.hedrick));
+            hallMap.put("nineteen", getResources().getString(R.string.cafe1919));
+            hallMap.put("rende", getResources().getString(R.string.rendezvous));
+
             //TODO: First, check to see if there is menu data to load!
             for(int i=0;i<main.halls.size();i++) {
                 for(int j=0;j<main.halls.get(i).timeViews.size();j++) {
                     if(main.halls.get(i).timeViews.get(j) == id) {
+                        String hallMeal = hallMap.get(main.halls.get(i).name);
+                        hallMeal += " - ";
                         switch(j) {
                             case 0:
                                 if(!main.halls.get(i).breakfast.isEmpty())
                                     intent.putStringArrayListExtra("menuData", (ArrayList<String>)main.halls.get(i).breakfast);
+                                    hallMeal += getResources().getString(R.string.breakfast);
                                 break;
                             case 1:
                                 if(!main.halls.get(i).lunch.isEmpty())
                                     intent.putStringArrayListExtra("menuData", (ArrayList<String>)main.halls.get(i).lunch);
+                                    hallMeal += getResources().getString(R.string.lunch);
                                 break;
                             case 2:
                                 if(!main.halls.get(i).dinner.isEmpty())
                                     intent.putStringArrayListExtra("menuData", (ArrayList<String>)main.halls.get(i).dinner);
+                                    hallMeal += getResources().getString(R.string.dinner);
                                 break;
                             case 3:
                                 if(!main.halls.get(i).lateNight.isEmpty())
                                     intent.putStringArrayListExtra("menuData", (ArrayList<String>)main.halls.get(i).lateNight);
+                                    hallMeal += getResources().getString(R.string.late_night);
                                 break;
                         }
+                        intent.putExtra("hallMeal", hallMeal);
                     }
                 }
             }

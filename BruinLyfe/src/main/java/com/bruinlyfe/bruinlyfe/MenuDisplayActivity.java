@@ -19,6 +19,8 @@ public class MenuDisplayActivity extends Activity {
 
         Intent intent = this.getIntent();
         List<String> meal = intent.getExtras().getStringArrayList("menuData");
+        String hallMeal = intent.getExtras().getString("hallMeal");
+        setTitle(hallMeal);
 
         List<Item> items = new ArrayList<Item>();
         for(int i=0;i<meal.size();i++) {
