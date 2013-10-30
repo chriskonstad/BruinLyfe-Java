@@ -1,11 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- xmlns:bruinlyfe="http://schemas.android.com/apk/res-auto"> -->
 
-    <!-- <item android:id="@+id/action_swipe_calculator"
+    <item android:id="@+id/action_swipe_calculator"
         android:title="@string/action_swipe_calculator"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_data_usage"/> -->
+        android:icon="@drawable/ic_action_data_usage"/>
 
     <item
         android:id="@+id/action_refresh"

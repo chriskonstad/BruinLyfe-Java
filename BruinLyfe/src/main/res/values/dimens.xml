@@ -3,4 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="table_padding">3dip</dimen>
+    <dimen name="spinner_padding">30dp</dimen>
+    <dimen name="label_padding">16dp</dimen>
+    <dimen name="label_text_size">20dp</dimen>
+    <dimen name="label_swipes_left_size">120dp</dimen>
 </resources>

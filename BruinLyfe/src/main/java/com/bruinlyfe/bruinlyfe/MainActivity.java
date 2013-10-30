@@ -91,11 +91,13 @@ public class MainActivity extends FragmentActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_about:
-                Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
-                startActivity(intent);
+                Intent intentAbout = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(intentAbout);
                 return true;
-            //case R.id.action_swipe_calculator:
-                //return true;
+            case R.id.action_swipe_calculator:
+                Intent intentSwipeCalculator = new Intent(getApplicationContext(), SwipeCalculatorActivity.class);
+                startActivity(intentSwipeCalculator);
+                return true;
             case R.id.action_refresh:
                 loadInfo(true);
                 return true;

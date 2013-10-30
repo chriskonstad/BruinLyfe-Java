@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="meal_plan_array">
+        <item>19 Premier</item>
+        <item>19 Regular</item>
+        <item>14 Premier</item>
+        <item>14 Regular</item>
+        <item>11 Regular</item>
+    </string-array>
+</resources>

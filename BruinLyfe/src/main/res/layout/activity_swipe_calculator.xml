@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:orientation="vertical"
+xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <Spinner
+        android:id="@+id/spinner_meal_plan"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spinner_padding"/>
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/numberPickerWeek"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Week:"
+            android:id="@+id/textViewWeek"
+            android:layout_margin="@dimen/label_padding"
+            android:textSize="@dimen/label_text_size"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/numberPickerWeek"/>
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_swipe_intro"
+            android:textSize="@dimen/label_text_size"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/label_padding"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewSwipesLeft"
+            android:text="000"
+            android:textSize="@dimen/label_swipes_left_size"
+            android:textColor="@color/ucla_blue"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/label_padding"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_swipe_concl"
+            android:textSize="@dimen/label_text_size"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/label_padding"
+            />
+
+        </RelativeLayout>
+</LinearLayout>
