@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bruinlyfe.bruinlyfe"
-    android:versionCode="11"
-    android:versionName="1.5.0" >
+    android:versionCode="12"
+    android:versionName="1.5.1" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.bruinlyfe.bruinlyfe.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

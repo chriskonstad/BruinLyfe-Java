@@ -51,8 +51,8 @@ public class MenuLoader {
                         hallDinner = hallData.getJSONArray("dinner");
                     else
                         hallDinner = new JSONArray();
-                    if(allData.has("late")) //lateNight is in the root object
-                        hallLateNight = allData.getJSONArray("late");
+                    if(hallData.has("latenight")) //lateNight is in the root object
+                        hallLateNight = hallData.getJSONArray("latenight");
                     else
                         hallLateNight = new JSONArray();
 
@@ -77,44 +77,6 @@ public class MenuLoader {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-
-            //Special case for special dining halls
-            try {
-                JSONArray rendeData = allData.getJSONArray("rende");
-                for(int i=0;i<rendeData.length();i++) {
-                    final int r = 6;
-                    halls.get(r).breakfast.add(rendeData.get(i).toString());
-                    halls.get(r).lunch.add(rendeData.get(i).toString());
-                    halls.get(r).dinner.add(rendeData.get(i).toString());
-                    halls.get(r).lateNight.add(rendeData.get(i).toString());
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                JSONArray bcafeData = allData.getJSONArray("bcafe");
-                for(int i=0;i<bcafeData.length();i++) {
-                    final int b = 0;
-                    halls.get(b).breakfast.add(bcafeData.get(i).toString());
-                    halls.get(b).lunch.add(bcafeData.get(i).toString());
-                    halls.get(b).dinner.add(bcafeData.get(i).toString());
-                    halls.get(b).lateNight.add(bcafeData.get(i).toString());
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                JSONArray nineteenData = allData.getJSONArray("nineteen");
-                for(int i=0;i<nineteenData.length();i++) {
-                    final int n = 5;
-                    halls.get(n).breakfast.add(nineteenData.get(i).toString());
-                    halls.get(n).lunch.add(nineteenData.get(i).toString());
-                    halls.get(n).dinner.add(nineteenData.get(i).toString());
-                    halls.get(n).lateNight.add(nineteenData.get(i).toString());
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
             }
         } catch(Exception e) {
             e.printStackTrace();

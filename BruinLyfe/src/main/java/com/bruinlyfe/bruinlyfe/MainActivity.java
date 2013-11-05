@@ -27,14 +27,15 @@ public class MainActivity extends FragmentActivity {
     final String hoursDeliminator = "\n";
 
     public DiningHall bcafe = new DiningHall("bcafe", R.id.timeViewBcafeBreakfast, R.id.timeViewBcafeLunch, R.id.timeViewBcafeDinner, R.id.timeViewBcafeLateNight);
+    public DiningHall bplate = new DiningHall("bplate", R.id.timeViewBplateBreakfast, R.id.timeViewBplateLunch, R.id.timeViewBplateDinner, R.id.timeViewBcafeLateNight);
+    public DiningHall nineteen = new DiningHall("nineteen", R.id.timeViewCafe1919Breakfast, R.id.timeViewCafe1919Lunch, R.id.timeViewCafe1919Dinner, R.id.timeViewCafe1919LateNight);
     public DiningHall covel = new DiningHall("covel", R.id.timeViewCovelBreakfast, R.id.timeViewCovelLunch, R.id.timeViewCovelDinner, R.id.timeViewCovelLateNight);
     public DiningHall deneve = new DiningHall("deneve", R.id.timeViewDeneveBreakfast, R.id.timeViewDeneveLunch, R.id.timeViewDeneveDinner, R.id.timeViewDeneveLateNight);
     public DiningHall feast = new DiningHall("feast", R.id.timeViewFeastBreakfast, R.id.timeViewFeastLunch, R.id.timeViewFeastDinner, R.id.timeViewFeastLateNight);
     public DiningHall hedrick = new DiningHall("hedrick", R.id.timeViewHedrickBreakfast, R.id.timeViewHedrickLunch, R.id.timeViewHedrickDinner, R.id.timeViewHedrickLateNight);
-    public DiningHall nineteen = new DiningHall("nineteen", R.id.timeViewCafe1919Breakfast, R.id.timeViewCafe1919Lunch, R.id.timeViewCafe1919Dinner, R.id.timeViewCafe1919LateNight);
     public DiningHall rende = new DiningHall("rende", R.id.timeViewRenBreakfast, R.id.timeViewRenLunch, R.id.timeViewRenDinner, R.id.timeViewRenLateNight);
 
-    List<DiningHall> halls = new ArrayList<DiningHall>();   //TODO: Append dining halls
+    List<DiningHall> halls = new ArrayList<DiningHall>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +46,12 @@ public class MainActivity extends FragmentActivity {
 
         //Build halls list
         halls.add(bcafe);
+        halls.add(bplate);
+        halls.add(nineteen);
         halls.add(covel);
         halls.add(deneve);
         halls.add(feast);
         halls.add(hedrick);
-        halls.add(nineteen);
         halls.add(rende);
 
         prefs = getSharedPreferences("com.bruinlyfe.bruinlyfe", MODE_PRIVATE);

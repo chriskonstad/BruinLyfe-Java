@@ -97,6 +97,7 @@ public class TimeView extends LinearLayout {
 
             Map<String, String> hallMap = new HashMap<String, String>();
             hallMap.put("bcafe", getResources().getString(R.string.bcafe));
+            hallMap.put("bplate", getResources().getString(R.string.bplate));
             hallMap.put("covel", getResources().getString(R.string.covel));
             hallMap.put("deneve", getResources().getString(R.string.deneve));
             hallMap.put("feast", getResources().getString(R.string.feast));
