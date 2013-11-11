@@ -159,7 +159,7 @@ public class MainActivity extends FragmentActivity {
                 menuLoader.downloadMenuData();
             }
             else {
-                Toast toast = Toast.makeText(getApplicationContext(), "No internet connection!", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getApplicationContext(), "No internet connection!", Toast.LENGTH_SHORT);
                 toast.show();
                 stopProgressBar();
             }
