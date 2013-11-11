@@ -3,6 +3,7 @@ package com.bruinlyfe.bruinlyfe;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,7 @@ public class SwipeCalculatorActivity extends Activity {
     private MealPlan mealPlan;
     private int week;
     private SharedPreferences prefs;
+    private Calendar cal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +63,39 @@ public class SwipeCalculatorActivity extends Activity {
         prefs = getSharedPreferences("com.bruinlyfe.bruinlyfe", MODE_PRIVATE);
         spinner.setSelection(prefs.getInt("mealPlan", 0));
         week = 1;
+
+        //Load up the week
+        int weekInYear = prefs.getInt("currentWeekInYear", 1);
+        int weekInPlan = prefs.getInt("currentWeekInPlan", 1);
+        cal = Calendar.getInstance();
+        int currentWeekInYear = cal.get(Calendar.WEEK_OF_YEAR);
+        //Sunday belongs to the previous week
+        if(cal.get(Calendar.DAY_OF_WEEK) == cal.SUNDAY && currentWeekInYear >= 1)
+            currentWeekInYear -= 1;
+
+        //Try to guess the week in the quarter.  Doesn't have to be perfect because the quarters
+        //end at weird times and the user can easily change it.
+        if(currentWeekInYear - weekInYear >= 0) {    //This will help reset between fall and winter quarters
+            weekInPlan = weekInPlan + (currentWeekInYear - weekInYear);
+            Log.w("BruinLyfe", "Calculated Week: " + String.valueOf(weekInPlan));
+            if(1 <= weekInPlan && weekInPlan <= 10) {
+                week = weekInPlan;
+                picker.setValue(weekInPlan);
+            }
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         prefs.edit().putInt("mealPlan", mealPlan.ordinal()).commit();
+
+        int currentWeekInYear = cal.get(Calendar.WEEK_OF_YEAR);
+        //Sunday belongs to the previous week
+        if(cal.get(Calendar.DAY_OF_WEEK) == cal.SUNDAY && currentWeekInYear >= 1)
+            currentWeekInYear -= 1;
+        prefs.edit().putInt("currentWeekInYear", currentWeekInYear).commit();
+        prefs.edit().putInt("currentWeekInPlan", week).commit();
     }
 
     private void setMealPlan(MealPlan plan) {
