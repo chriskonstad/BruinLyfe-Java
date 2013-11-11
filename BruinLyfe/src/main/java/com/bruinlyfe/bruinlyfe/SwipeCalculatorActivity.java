@@ -1,6 +1,8 @@
 package com.bruinlyfe.bruinlyfe;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +25,8 @@ public class SwipeCalculatorActivity extends Activity {
     private int week;
     private SharedPreferences prefs;
     private Calendar cal;
+    private int countedSwipes;
+    private int totalSwipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,11 @@ public class SwipeCalculatorActivity extends Activity {
                 picker.setValue(weekInPlan);
             }
         }
+
+        //Load up the counted swipes
+        totalSwipes = prefs.getInt("totalSwipes", 203);
+        countedSwipes = prefs.getInt("countedSwipes", 0);
+        displayCountedSwipesLeft(totalSwipes - countedSwipes);
     }
 
     @Override
@@ -96,6 +105,12 @@ public class SwipeCalculatorActivity extends Activity {
             currentWeekInYear -= 1;
         prefs.edit().putInt("currentWeekInYear", currentWeekInYear).commit();
         prefs.edit().putInt("currentWeekInPlan", week).commit();
+
+        //Save counted swipes
+        prefs.edit().putInt("countedSwipes", countedSwipes).commit();
+
+        //Save the total number of swipes
+        prefs.edit().putInt("totalSwipes", totalSwipes).commit();
     }
 
     private void setMealPlan(MealPlan plan) {
@@ -163,5 +178,69 @@ public class SwipeCalculatorActivity extends Activity {
     private void displaySwipesLeft(int swipes) {
         TextView textView = (TextView)findViewById(R.id.textViewSwipesLeft);
         textView.setText(String.valueOf(swipes));
+    }
+
+    public void onSwipe(View view) {
+        if(totalSwipes - countedSwipes > 0)
+            countedSwipes++;
+        displayCountedSwipesLeft(totalSwipes - countedSwipes);
+    }
+
+    public void onUnswipe(View view) {
+        if(countedSwipes > 0)
+            countedSwipes--;
+        displayCountedSwipesLeft(totalSwipes - countedSwipes);
+    }
+
+    private void displayCountedSwipesLeft(int swipes) {
+        TextView countedSwipesView = (TextView) findViewById(R.id.textViewCountedSwipesLeft);
+        countedSwipesView.setText(String.valueOf(swipes));
+    }
+
+    public void onReset(View view) {
+        AlertDialog.Builder ab = new AlertDialog.Builder(this);
+        ab.setMessage("Are you sure?").setPositiveButton("Yes", resetDialogClickListener)
+                .setNegativeButton("No", resetDialogClickListener).show();
+    }
+
+    DialogInterface.OnClickListener resetDialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    resetCountedSwipes();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //"No" button clicked, so do nothing
+                    break;
+            }
+        }
+    };
+
+    private void resetCountedSwipes() {
+        countedSwipes = 0;
+        switch(mealPlan)
+        {
+            case Premier19:
+                totalSwipes = 203;
+                break;
+            case Regular19:
+                totalSwipes = 19;
+                break;
+            case Premier14:
+                totalSwipes = 149;
+                break;
+            case Regular14:
+                totalSwipes = 14;
+                break;
+            case Regular11:
+                totalSwipes = 11;
+                break;
+            default:
+                //do nothing
+                break;
+        }
+        displayCountedSwipesLeft(totalSwipes - countedSwipes);
     }
 }

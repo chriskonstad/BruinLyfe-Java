@@ -37,8 +37,11 @@
         Cheng Cheng</string>
     <string name="title_activity_swipe_calculator">Swipe Calculator</string>
     <string name="action_settings">Settings</string>
+    <string name="button_swipe">Swipe!</string>
+    <string name="button_unswipe">Unswipe</string>
+    <string name="button_swipe_reset">Reset</string>
 
-    <string name="label_swipe_intro">You should have</string>
-    <string name="label_swipe_concl">swipes left after today.</string>
+    <string name="label_swipe_intro_estimated">Estimated swipes left after today:</string>
+    <string name="label_swipe_intro_counted">Your swipes left:</string>
 
 </resources>
