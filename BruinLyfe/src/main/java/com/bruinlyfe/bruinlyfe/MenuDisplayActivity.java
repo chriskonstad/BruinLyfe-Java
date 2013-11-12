@@ -25,6 +25,7 @@ public class MenuDisplayActivity extends Activity {
         List<Item> items = new ArrayList<Item>();
         for(int i=0;i<meal.size();i++) {
             //Check to see if the item is a section header
+            meal.set(i, meal.get(i).replace("&amp;", "&")); //fix ampersand issues
             if(meal.get(i).toString().contains("\"title\"")) {
                 StringBuilder sb = new StringBuilder(meal.get(i).toString());
                 //Remove some JSON stuff
