@@ -30,18 +30,21 @@
         <activity
             android:name="com.bruinlyfe.bruinlyfe.MenuDisplayActivity"
             android:label="Menu"
-            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity" >
+            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.bruinlyfe.bruinlyfe.TutorialActivity"
             android:label="Tutorial"
             android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity"
-            android:theme="@style/Transparent" >
+            android:theme="@style/Transparent"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.bruinlyfe.bruinlyfe.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity" >
+            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bruinlyfe.bruinlyfe.MainActivity" />
@@ -49,7 +52,8 @@
         <activity
             android:name="com.bruinlyfe.bruinlyfe.SwipeCalculatorActivity"
             android:label="@string/title_activity_swipe_calculator"
-            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity" >
+            android:parentActivityName="com.bruinlyfe.bruinlyfe.MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bruinlyfe.bruinlyfe.MainActivity" />
