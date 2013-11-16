@@ -20,15 +20,14 @@ local.properties
 .project
 
 # Android Studio
-.idea/
+.idea/workspace.xml
+.idea/tasks.xml
 .gradle
 /*/local.properties
 /*/out
 /*/*/build
 /*/build
 /*/*/production
-*.iml
 *.iws
-*.ipr
 *~
 *.swp
