@@ -12,6 +12,7 @@
             android:layout_height="wrap_content"
             android:background="@color/ucla_blue"
             android:textColor="@color/ucla_gold"
-            android:textSize="21dip"/>
+            android:textSize="21dip"
+            android:gravity="left"/>
 
 </LinearLayout>
