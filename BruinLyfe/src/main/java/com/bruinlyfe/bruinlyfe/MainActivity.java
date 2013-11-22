@@ -25,6 +25,7 @@ public class MainActivity extends FragmentActivity {
     SharedPreferences prefs = null;
     MenuItem menuItem = null;
     final String hoursDeliminator = "\n";
+    List<Toast> toastList = new ArrayList<Toast>();
 
     public DiningHall bcafe = new DiningHall("bcafe", R.id.timeViewBcafeBreakfast, R.id.timeViewBcafeLunch, R.id.timeViewBcafeDinner, R.id.timeViewBcafeLateNight);
     public DiningHall bplate = new DiningHall("bplate", R.id.timeViewBplateBreakfast, R.id.timeViewBplateLunch, R.id.timeViewBplateDinner, R.id.timeViewBcafeLateNight);
@@ -108,6 +109,17 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        //Force cancel all of the toasts
+        for(int i=0; i<toastList.size(); i++) {
+            toastList.get(i).cancel();
+        }
+        toastList.clear();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         //Force a menu update, which is basically the starting point of this app
@@ -145,8 +157,7 @@ public class MainActivity extends FragmentActivity {
         }
         else {
             if(isNetworkAvailable()) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Downloading Data...", Toast.LENGTH_SHORT);
-                toast.show();
+                displayToast("Downloading Data...");
                 //Load the hours data
                 DownloadTask dTask;
                 dTask = new DownloadTask();
@@ -159,8 +170,7 @@ public class MainActivity extends FragmentActivity {
                 menuLoader.downloadMenuData();
             }
             else {
-                Toast toast = Toast.makeText(getApplicationContext(), "No internet connection!", Toast.LENGTH_SHORT);
-                toast.show();
+                displayToast("No internet connection!");
                 stopProgressBar();
             }
         }
@@ -293,6 +303,12 @@ public class MainActivity extends FragmentActivity {
     public void cacheMenuData(String rawJsonResult) {
         prefs.edit().putString("menuData", rawJsonResult).commit();
         prefs.edit().putInt("dayCacheMenu", Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).commit();    //record when the cache was created
+    }
+
+    public void displayToast(String textToShow) {
+        Toast toast = Toast.makeText(getApplicationContext(), textToShow, Toast.LENGTH_SHORT);
+        toast.show();
+        toastList.add(toast);   //add to the list of toasts so it can be canceled later
     }
 
     private TimeView[] initTimeViewList() {

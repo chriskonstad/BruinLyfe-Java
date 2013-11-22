@@ -145,16 +145,13 @@ public class TimeView extends LinearLayout {
                 main.startActivity(intent);
             }
             else if(intent.hasExtra("menuData") && openView.getText().toString().contains("CLOSED")) {
-                Toast toast = Toast.makeText(v.getContext(), "Location closed", Toast.LENGTH_SHORT);
-                toast.show();
+                main.displayToast("Location closed");
             }
             else if(!intent.hasExtra("menuData") && openView.getText().toString().contains("CLOSED")) {
-                Toast toast = Toast.makeText(v.getContext(), "Location closed", Toast.LENGTH_SHORT);
-                toast.show();
+                main.displayToast("Location closed");
             }
             else {
-                Toast toast = Toast.makeText(v.getContext(), "No menu data", Toast.LENGTH_SHORT);
-                toast.show();
+                main.displayToast("No menu data");
             }
         }
     };
