@@ -13,5 +13,6 @@ If you'd like to contribute to this project, there are a few ways to help out:
 
 3) Submit bug reports
 
+Google Play Link: https://play.google.com/store/apps/details?id=com.bruinlyfe.bruinlyfe
 
 Thanks!
